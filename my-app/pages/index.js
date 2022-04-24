@@ -32,7 +32,7 @@ export default function Home() {
 // helper function to connect wallet
   const connectWallet = async () => {
     try {
-      await getProvidersOrSigner();
+      await  getProviderOrSigner();
       setWalletConnected(true);
     } catch (err) {
       console.error(err);
@@ -56,7 +56,7 @@ export default function Home() {
  // Reads the number of proposals in the DAO contract and sets the `numProposals` state variable
   const getNumProposalsInDAO = async () => {
     try {
-      const provider = await getProvidersOrSigner();
+      const provider = await getProviderOrSigner();
       const contract = getDaoContractInstance(provider);
       const daoNumProposals = await contract.numProposals();
       setNumProposals(daoNumProposals.toString());
@@ -68,11 +68,11 @@ export default function Home() {
   // Reads the balance of the user's CryptoDevs NFTs and sets the `nftBalance` state variable
   const getUserNFTBalance = async () => {
     try {
-      const signer = await getProvidersOrSigner(true);
-      const nftContract = getCryptoDevsNFTContractInstance();
+      const signer = await  getProviderOrSigner(true);
+      const nftContract = getCryptoDevsNFTContractInstance(signer);
       const balance = await nftContract.balanceOf(signer.getAddress());
       //The parseInt function converts its first argument to a string, parses that string, then returns an integer
-      setNftBalance(parseInt(balance.toString));
+      setNftBalance(parseInt(balance.toString()));
     } catch (err) {
       console.error(err);
     }
@@ -174,6 +174,24 @@ export default function Home() {
       window.alert(error.data.message);
     }
   };
+
+
+  //  const getProviderOrSigner = async (needSigner = false) => {
+  //    const provider = await web3ModalRef.current.connect();
+  //    const web3Provider = new providers.Web3Provider(provider);
+
+  //    const { chainId } = await web3Provider.getNetwork();
+  //    if (chainId !== 4) {
+  //      window.alert("Please switch to the Rinkeby network!");
+  //      throw new Error("Please switch to the Rinkeby network");
+  //    }
+
+  //    if (needSigner) {
+  //      const signer = web3Provider.getSigner();
+  //      return signer;
+  //    }
+  //    return web3Provider;
+  //  };
 
 
 
